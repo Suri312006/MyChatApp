@@ -1,5 +1,7 @@
 <script lang="ts">
-    import type { PageData } from './$types';
+    import { goto } from '$app/navigation';
+import type { PageData } from './$types';
+    
     
     export let data: PageData;
 
@@ -16,7 +18,16 @@
 					Zing
 				</h1>
 			</li>
+            
+            <div class="h-10" >
+
+            </div>
+
+            <li>
+                <button on:click={()=>{goto('/signup')}} type="button" class='btn-md variant-filled text-xl font-bold'> Get Started </button>
+            </li>
 		</ul>
+        
 	</div>
 </main>
 

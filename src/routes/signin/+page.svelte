@@ -2,9 +2,7 @@
 	
     
     export let data;
-
 	// export let form: ActionData;
-
     console.log(data.session)
 
 </script>
@@ -23,6 +21,6 @@
 
 
 <form method="POST">
-    <button formaction="?/login&provider=google"> lihuliuh</button>
+    <button class='button-base-styles' formaction="?/login&provider=google"> lihuliuh</button>
 
 </form>
