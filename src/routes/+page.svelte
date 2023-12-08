@@ -4,31 +4,32 @@
 
 	export let data;
 
-	console.log(data);
+	console.log(data.supabase)
 
-	onMount(() => {
-		if (data.session == null) {
-			//* need to call goto inside of onMount because of ssr lol which is really cool
-			goto('/welcome');
-		}
-	});
+
+	// onMount(() => {
+	// 	if (data.session == null) {
+	// 		//* need to call goto inside of onMount because of ssr lol which is really cool
+	// 		goto('/welcome');
+	// 	}
+	// });
 </script>
 
 <main class="flex justify-center items-center">
-	<div class="flex text-center justify-center items-center h-screen">
-		<ul>
-			<li>
-				<h1 class="text-7xl">Welcome to</h1>
-			</li>
-			<li>
-				<h1
-					class="text-9xl pb-5 h-max font-bold bg-gradient-to-r from-orange-700 via-blue-500 to-green-400 bg-300% text-transparent bg-clip-text animate-gradient"
-				>
-					Zing
-				</h1>
-			</li>
-		</ul>
+<div id="contacts-list" class="basis-1/4">
+hi
+</div>
+<div id="messages-input" class="basis-3/4">
+	<div class="h-[90vh]" id="messages">
+
 	</div>
+	<div class="h-[10vh]" id="input">
+		<form>
+			<input name='message' type="text" class="w-full text-black">
+		</form>
+	</div>
+	
+</div>
 </main>
 
 <style>
