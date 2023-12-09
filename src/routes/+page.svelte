@@ -1,35 +1,39 @@
-<script>
+<script lang="ts">
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 
 	export let data;
 
-	console.log(data.supabase)
+	console.log(data.tableData);
 
-
-	// onMount(() => {
-	// 	if (data.session == null) {
-	// 		//* need to call goto inside of onMount because of ssr lol which is really cool
-	// 		goto('/welcome');
-	// 	}
-	// });
+	let countries: any[] = [];
+	// for each loop!
+	data.tableData?.forEach((thing) => {
+		console.log(thing);
+		countries.push(thing);
+	});
 </script>
 
-<main class="flex justify-center items-center">
-<div id="contacts-list" class="basis-1/4">
-hi
-</div>
-<div id="messages-input" class="basis-3/4">
-	<div class="h-[90vh]" id="messages">
-
+<main class="flex justify-center items-center ">
+	<div id="contacts-list" class="basis-1/4">
+		<div id="lol" class=" container h-[100vh] p-2 overflow-auto">
+			{#each countries as country}
+				<div class="w-full variant-filled-primary bg-gray-50 border border-spacing-1">
+					<h1>
+						{country.name}
+					</h1>
+				</div>
+			{/each}
+		</div>
 	</div>
-	<div class="h-[10vh]" id="input">
-		<form>
-			<input name='message' type="text" class="w-full text-black">
-		</form>
+	<div id="messages-input" class="basis-3/4">
+		<div class="h-[90vh]" id="messages"></div>
+		<div class="h-[10vh]" id="input">
+			<form>
+				<input name="message" type="text" class="w-full text-black" />
+			</form>
+		</div>
 	</div>
-	
-</div>
 </main>
 
 <style>
