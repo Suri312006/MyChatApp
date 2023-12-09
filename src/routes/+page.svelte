@@ -8,19 +8,25 @@
 
 	let countries: any[] = [];
 	// for each loop!
-	data.tableData?.forEach((thing) => {
-		console.log(thing);
-		countries.push(thing);
-	});
+	//! i dont think this is the right way to do this
+
+
+	let allUsers: any[] = [];
+	data.allUsers?.forEach((user)=>{
+		allUsers.push(user)
+		console.log(user)
+	})
+
+
 </script>
 
 <main class="flex justify-center items-center ">
 	<div id="contacts-list" class="basis-1/4">
 		<div id="lol" class=" container h-[100vh] p-2 overflow-auto">
-			{#each countries as country}
+			{#each allUsers as user}
 				<div class="w-full variant-filled-primary bg-gray-50 border border-spacing-1">
 					<h1>
-						{country.name}
+						{user.full_name}
 					</h1>
 				</div>
 			{/each}

@@ -8,8 +8,11 @@ export const load = async ({ parent }) => {
   }
   const { data: tableData } = await supabase.from('countries').select('*')
 
+  const {data: allUsers} = await supabase.from('profiles').select('*')
+
   return {
     user: session.user,
     tableData,
+    allUsers
   }
 }
