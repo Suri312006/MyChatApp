@@ -22,19 +22,28 @@
 		const myID = data.session?.user.id;
 		const otherID = id;
 
-		let conversations = await data.supabase.from('conversations').select();
+		let arr1 = await data.supabase.from('conversations').select().eq('user1', myID!);
+		let arr2 = await data.supabase.from('conversations').select().eq('user2', myID!);
 
-		conversations.data?.forEach(async (conversation) => {
+		// conversations that only currently logged in user is participating in
+		let conversations = arr1.data?.concat(arr2.data!)
+		
+		
+		//* okay wow that is dumb behavior, do not use forEach loops on async objects lmfao
+		for ( const conversation of conversations!) {
 			if (
 				(conversation.user1 == myID || conversation.user2 == myID) &&
 				(conversation.user2 == myID || conversation.user1 == otherID)
 			) {
 				// conversation exists, should return messages related to said conversation
+				console.log('conversation exists, fetching messages')
 				messages = await data.supabase.from('messages').select().eq('conversation_id', conversation.id);
-				return
+				return null
 			}
-		});
+		}
 		
+
+		console.log("creating new conversation")
 		//conversation does not exist atp
 		const { error } = await data.supabase
 			.from('conversations')
