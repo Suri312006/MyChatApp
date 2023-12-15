@@ -1,39 +1,80 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
+	import type { UUID } from 'crypto';
+	import Message from '$lib/message.svelte';
+	import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 
-	export let data;
+	export let data: PageData;
+	let messages;
 
-	console.log(data.tableData);
+	console.log(data.userData);
 
-	let countries: any[] = [];
-	// for each loop!
 	//! i dont think this is the right way to do this
 
+	let selected_user: typeof data.userData;
 
-	let allUsers: any[] = [];
-	data.allUsers?.forEach((user)=>{
-		allUsers.push(user)
-		console.log(user)
-	})
+	const select_user_to_message = async (id: string) => {
+		//create conversation if it doesnt exist already
 
 
+		const myID = data.session?.user.id;
+		const otherID = id;
+
+		let conversations = await data.supabase.from('conversations').select();
+
+		conversations.data?.forEach(async (conversation) => {
+			if (
+				(conversation.user1 == myID || conversation.user2 == myID) &&
+				(conversation.user2 == myID || conversation.user1 == otherID)
+			) {
+				// conversation exists, should return messages related to said conversation
+				messages = await data.supabase.from('messages').select().eq('conversation_id', conversation.id);
+				return
+			}
+		});
+		
+		//conversation does not exist atp
+		const { error } = await data.supabase
+			.from('conversations')
+			.insert({ user1: myID, user2: otherID });
+
+
+		return
+		//creating conversation
+		console.log(conversations);
+	};
 </script>
 
-<main class="flex justify-center items-center ">
+<main class="flex justify-center items-center">
 	<div id="contacts-list" class="basis-1/4">
 		<div id="lol" class=" container h-[100vh] p-2 overflow-auto">
-			{#each allUsers as user}
-				<div class="w-full variant-filled-primary bg-gray-50 border border-spacing-1">
-					<h1>
-						{user.full_name}
-					</h1>
-				</div>
-			{/each}
+			{#if data.allUsers}
+				<ul>
+					{#each data.allUsers as user}
+						<li>
+							<button
+								on:click={() => {
+									select_user_to_message(user.id);
+								}}
+							>
+								<div class="w-full variant-filled-primary bg-gray-50 border border-spacing-1">
+									<h1>
+										{user.full_name}
+									</h1>
+								</div>
+							</button>
+						</li>
+					{/each}
+				</ul>
+			{/if}
 		</div>
 	</div>
-	<div id="messages-input" class="basis-3/4">
-		<div class="h-[90vh]" id="messages"></div>
+	<div id="messages" class="basis-3/4">
+		<div id="messages-view" class="h-[90vh] bg-black rounded-xl">
+			<Message user_name="lol" text="lol" time="right now mlmao" />
+		</div>
 		<div class="h-[10vh]" id="input">
 			<form>
 				<input name="message" type="text" class="w-full text-black" />
@@ -43,22 +84,4 @@
 </main>
 
 <style>
-	.animate-gradient {
-		background-size: 300%;
-		-webkit-animation: animatedgradient 6s ease infinite alternate;
-		-moz-animation: animatedgradient 6s ease infinite alternate;
-		animation: animatedgradient 6s ease infinite alternate;
-	}
-
-	@keyframes animatedgradient {
-		0% {
-			background-position: 0% 50%;
-		}
-		50% {
-			background-position: 100% 50%;
-		}
-		100% {
-			background-position: 0% 50%;
-		}
-	}
 </style>
