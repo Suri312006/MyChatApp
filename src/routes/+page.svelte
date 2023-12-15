@@ -5,17 +5,39 @@
 	import type { UUID } from 'crypto';
 	import Message from '$lib/message.svelte';
 	import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
+	import Conversation from '$lib/conversation.svelte';
 
 	export let data: PageData;
-	let messages;
+	//want ths to be reactive
+	let prev_messages;
+	let curr_conversation_id="fd171c51-c397-45b5-bce7-7bd0456ec3ae";
 
-	console.log(data.userData);
+	let new_message_text:string = ''
+
+	$: messages_channel = data.supabase
+		.channel('messages_channel')
+		.on('postgres_changes', { 
+			event: 'INSERT',
+			schema: 'public',
+			table: 'messages',
+			
+		}, payload => {
+			console.log("payload new", payload.new)
+			console.log("payload old", payload.old)
+			console.log("payload eventType", payload.eventType)
+
+		}).subscribe((status)=>{
+			console.log(status)
+		});
+
+	
+	
+	
+	console.log(data.userData)
 
 	//! i dont think this is the right way to do this
 
-	let selected_user: typeof data.userData;
-
-	const select_user_to_message = async (id: string) => {
+	export const switch_conversation = async (id: string) => {
 		//create conversation if it doesnt exist already
 
 		const myID = data.session?.user.id;
@@ -41,7 +63,10 @@
 				.from('conversations')
 				.insert({ user1: myID, user2: otherID });
 
-			messages = null;
+			let new_conversation = await data.supabase.from('conversations').select().eq('user1', myID!)
+			.eq('user2', otherID!); 
+
+			curr_conversation_id = new_conversation.data![0].id
 
 			return;
 		} else {
@@ -57,13 +82,21 @@
 			console.log(conversation);
 
 			console.log('conversation exists, grabbing messages!');
-			messages = await data.supabase
+			curr_conversation_id = conversation.id
+
+			prev_messages = await data.supabase
 				.from('messages')
 				.select()
 				.eq('conversation_id', conversation!.id);
 			return;
 		}
 	};
+
+	export const send_message = async() =>{
+		const { error } = await data.supabase.from("messages").insert({ author: data.session?.user.id, conversation_id: curr_conversation_id, body: new_message_text });
+		console.log(error)
+		new_message_text=''
+	}
 </script>
 
 <main class="flex justify-center items-center">
@@ -75,14 +108,10 @@
 						<li>
 							<button
 								on:click={() => {
-									select_user_to_message(user.id);
+									switch_conversation(user.id);
 								}}
 							>
-								<div class="w-full variant-filled-primary bg-gray-50 border border-spacing-1">
-									<h1>
-										{user.full_name}
-									</h1>
-								</div>
+								<Conversation name={user.full_name} id={user.id}/>
 							</button>
 						</li>
 					{/each}
@@ -96,7 +125,8 @@
 		</div>
 		<div class="h-[10vh]" id="input">
 			<form>
-				<input name="message" type="text" class="w-full text-black" />
+				<input name="message" type="text" bind:value={new_message_text} class="w-full text-black" />
+				<button on:click={send_message}> send </button>
 			</form>
 		</div>
 	</div>
