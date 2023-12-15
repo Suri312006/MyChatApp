@@ -1,7 +1,7 @@
 <script lang='ts'>
 import type { Tables } from '../../types/supabase.types';
 
-    export let curr_user:Tables<"users">;
+    export let curr_user_id:string;
     export let message:Tables<"messages">
 
     //maybe some sort of message id
