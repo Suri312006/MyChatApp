@@ -2,7 +2,6 @@
 	import type { Tables } from '../../types/supabase.types';
 	export let user: Tables<'users'>;
 	//maybe some sort of message id
-	console.log(user.avatar_url)
 </script>
 
 <main id="message">

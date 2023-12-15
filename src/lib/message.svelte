@@ -4,7 +4,7 @@ import type { Tables } from '../../types/supabase.types';
     export let curr_user_id:string;
     export let message:Tables<"messages">
 
-    //maybe some sort of message id
+    //need to fetch user link?
 
 </script>
 
@@ -17,9 +17,9 @@ import type { Tables } from '../../types/supabase.types';
           </span>
           <div class="flex flex-col">
             <div class="bg-gray-200 dark:bg-gray-500 rounded-xl p-3">
-              <p class="text-gray-800 dark:text-gray-200">This is a placeholder message text.</p>
+              <p class="text-gray-800 dark:text-gray-200">{message.body}</p>
             </div>
-            <p class="text-right text-xs text-gray-500 mt-1">Sent at 4:05 PM</p>
+            <p class="text-right text-xs text-gray-500 mt-1">{message.created_at}</p>
           </div>
         </div>
       </div>

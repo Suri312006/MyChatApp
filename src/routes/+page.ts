@@ -14,6 +14,11 @@ export const load = async ({ parent }) => {
 
   console.log("others", otherUsers)
 
+  console.log("join table testing", await supabase
+				.from('messages')
+				.select(`*, users(*)`)
+				.eq('conversation_id', 'fd171c51-c397-45b5-bce7-7bd0456ec3ae'))
+
   return {
     user: session.user,
     tableData,

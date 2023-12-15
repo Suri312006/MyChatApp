@@ -35,12 +35,13 @@
 			console.log(status);
 		});
 
-	console.log(data.userData);
-
 	//! i dont think this is the right way to do this
 
 	export const switch_conversation = async (id: string) => {
 		//create conversation if it doesnt exist already
+		console.log("session",data.session)
+		
+		
 
 		const myID = data.session?.user.id;
 		const otherID = id;
@@ -81,10 +82,10 @@
 			return;
 		} else {
 			let conversation;
-			if (arr1.data != null) {
-				conversation = arr1.data[0];
-			} else if (arr2.data != null) {
-				conversation = arr2.data[0];
+			if (arr1.data!.length != 0) {
+				conversation = arr1.data![0];
+			} else if (arr2.data!.length != 0) {
+				conversation = arr2.data![0];
 			} else {
 				throw new Error('something went wrong switching conversations');
 			}
@@ -98,10 +99,7 @@
 				.from('messages')
 				.select()
 				.eq('conversation_id', curr_conversation_id);
-			prev_messages = await data.supabase
-				.from('messages')
-				.select()
-				.eq('conversation_id', conversation!.id);
+
 			return;
 		}
 	};
