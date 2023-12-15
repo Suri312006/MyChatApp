@@ -103,7 +103,7 @@
 	<div id="contacts-list" class="basis-1/4">
 		<div id="lol" class=" container h-[100vh] p-2 overflow-auto">
 			{#if data.otherUsers}
-				<ul>
+				<ul class="grid grid-flow-row auto-rows-max items-center justify-center gap-2">
 					{#each data.otherUsers as user}
 						<li>
 							<button
@@ -111,7 +111,7 @@
 									switch_conversation(user.id);
 								}}
 							>
-								<Conversation name={user.full_name} id={user.id}/>
+								<Conversation user={user}/>
 							</button>
 						</li>
 					{/each}
