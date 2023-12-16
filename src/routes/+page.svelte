@@ -1,7 +1,5 @@
-<script context="module" lang=ts>
-
+<script context="module" lang="ts">
 </script>
-
 
 <script lang="ts">
 	import { goto } from '$app/navigation';
@@ -21,8 +19,6 @@
 	let new_message_text: string = '';
 
 	let prev_messages: any;
-
-	
 
 	$: messages_channel = data.supabase
 		.channel('messages_channel')
@@ -101,10 +97,8 @@
 				.from('messages')
 				.select(`*, author(*), conversations(*)`)
 				.eq('conversation_id', curr_conversation_id);
-			
+
 			return;
-
-
 		}
 	};
 
@@ -139,8 +133,8 @@
 			{/if}
 		</div>
 	</div>
-	<div id="messages" class="basis-3/4">
-		<div id="messages-view" class="h-[90vh] bg-black rounded-xl">
+	<div id="messages" class=" basis-3/4">
+		<div id="messages-view" class="container flex-col justify-end overflow-auto h-[90vh] bg-black rounded-xl">
 			{#if prev_messages}
 				{#each prev_messages.data as message}
 					{#if data.session}
@@ -150,10 +144,10 @@
 			{/if}
 		</div>
 		<div class="h-[10vh]" id="input">
-			<form>
-				<input name="message" type="text" bind:value={new_message_text} class="w-full text-black" />
-				<button on:click={send_message}> send </button>
-			</form>
+			<form on:submit|preventDefault={send_message}>
+			<input name="message" type="text" bind:value={new_message_text} class="w-full text-black" />
+			<button> send </button>
+		</form>
 		</div>
 	</div>
 </main>
