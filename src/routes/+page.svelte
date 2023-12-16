@@ -1,3 +1,8 @@
+<script context="module" lang=ts>
+
+</script>
+
+
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
@@ -6,6 +11,7 @@
 	import Message from '$lib/message.svelte';
 	import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 	import Conversation from '$lib/conversation.svelte';
+	import type { QueryData } from '@supabase/supabase-js';
 
 	export let data: PageData;
 	//want ths to be reactive
@@ -15,6 +21,8 @@
 	let new_message_text: string = '';
 
 	let prev_messages: any;
+
+	
 
 	$: messages_channel = data.supabase
 		.channel('messages_channel')
@@ -39,9 +47,6 @@
 
 	export const switch_conversation = async (id: string) => {
 		//create conversation if it doesnt exist already
-		console.log("session",data.session)
-		
-		
 
 		const myID = data.session?.user.id;
 		const otherID = id;
@@ -56,9 +61,6 @@
 			.select()
 			.eq('user2', myID!)
 			.eq('user1', otherID!);
-
-		console.log('arr1', arr1);
-		console.log('arr2', arr2);
 
 		if (arr1.data!.length == 0 && arr2.data!.length == 0) {
 			console.log('creating new conversation');
@@ -97,10 +99,12 @@
 
 			prev_messages = await data.supabase
 				.from('messages')
-				.select()
+				.select(`*, author(*), conversations(*)`)
 				.eq('conversation_id', curr_conversation_id);
-
+			
 			return;
+
+
 		}
 	};
 
