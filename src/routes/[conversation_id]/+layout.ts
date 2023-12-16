@@ -13,6 +13,7 @@ export const load = (async ({ parent }) => {
 
 	// we want to load the user's friends but we can load all other users for now
 	//fetch the conversations this person is in, coupled with the users in each convo
+    
     // quite possibly the sexiest sql_call ive done here holy moly
 	const { data: conversations } = await supabase
 		.from('conversations')

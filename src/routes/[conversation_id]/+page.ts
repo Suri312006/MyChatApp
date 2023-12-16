@@ -15,7 +15,7 @@ export const load = (async ({ params, parent }) => {
 	console.log(requested_conversation)
 
     if ( (session?.user.id != requested_conversation.data![0].user1 ) && (session?.user.id != requested_conversation.data![0].user2)){
-		error(401, { message: "Unauthorized to access conversation"
+		throw error(401, { message: "Unauthorized to access conversation"
 
 		})
 	}
