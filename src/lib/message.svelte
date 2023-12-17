@@ -4,8 +4,7 @@
 	export let curr_user_id: string;
 	export let message: any;
 
-	//need to fetch user link?
-	console.log(message);
+
 </script>
 
 <main id="message">

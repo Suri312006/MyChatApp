@@ -23,6 +23,7 @@ import type { PageData } from './$types';
 
             </div>
 
+            
             <li>
                 <button on:click={()=>{goto('/signup')}} type="button" class='btn-md variant-filled text-xl font-bold'> Get Started </button>
             </li>

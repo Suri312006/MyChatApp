@@ -37,7 +37,7 @@
 </script>
 
 <main>
-    <div id="messages-view" class="container flex-col justify-end overflow-auto h-[90vh] bg-black rounded-xl">
+    <div id="messages-view" class="container flex-col justify-end overflow-auto h-[50vh] bg-black rounded-xl">
         {#if data.prev_messages}
             {#each data.prev_messages as message}
                 {#if data.session}

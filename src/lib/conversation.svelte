@@ -4,7 +4,6 @@
 	export let curr_user_id;
 	//maybe some sort of message id
 
-	console.log(conversation)
 
 	let user:any ;
 
