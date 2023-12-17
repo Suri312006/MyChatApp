@@ -5,19 +5,32 @@
 	import { invalidate, invalidateAll } from '$app/navigation';
 	export let data: PageData;
 
-	let container: HTMLDivElement;
+		let container: HTMLDivElement;
 
-function scrollToBottom() {
+		const scrollToBottom = () => {
+  // Scroll to the bottom
   container.scrollTop = container.scrollHeight;
-}
-	
-	onMount(()=>{
-		scrollToBottom()
-	})
+  // Use setTimeout to log values after the scroll operation
+  setTimeout(() => {
+//     console.log(container.scrollTop, container.scrollHeight);
 
-	console.log('being run')
-	console.log(data.conversation_id)
+     container.scrollTop = container.scrollHeight;
+	 /* This way, the console.log statement will execute after the browser
+	 has had a chance to update the scrollTop property to the new scrollHeight. 
+	 The setTimeout with a delay of 0 milliseconds essentially schedules 
+	 the callback to be executed in the next available event loop cycle, 
+	 ensuring it's executed after the current execution context.*/
+	 
+  }, 0);
+ 		};
+
+	onMount(() => {
+		scrollToBottom();
+	});
+
+	let all_messages = Array.from(data.prev_messages!);
 	//* ENABLED REALTIME FILTER HOLY MOLY ITS SO FINEEEEE
+
 	let new_messages_channel = data.supabase
 		.channel('messages_channel')
 		.on(
@@ -26,18 +39,19 @@ function scrollToBottom() {
 				event: 'INSERT',
 				schema: 'public',
 				table: 'messages',
-				filter: 'conversation_id=eq.'+data.conversation_id
+				filter: 'conversation_id=eq.' + data.conversation_id
 			},
-			(payload) => {
-				console.log('payload new', payload.new);
-				console.log('payload eventType', payload.eventType);
+			async (payload) => {
+				let new_message = await data.supabase
+					.from('messages')
+					.select('*, author(*)')
+					.eq('id', payload.new.id);
 
-				//okay lmao we are just reloading on change which is funny
-				
-				invalidateAll().then(()=>{
-					scrollToBottom()
-				})
+				// @ts-ignore
+				all_messages = [...all_messages, ...new_message.data]; // Update all_messages array
 
+				scrollToBottom();
+				console.log('called?');
 			}
 		)
 		.subscribe((status) => {
@@ -55,22 +69,19 @@ function scrollToBottom() {
 			conversation_id: data.conversation_id,
 			body: new_message_text
 		});
-		console.log(error);
 		new_message_text = '';
 	};
-
-
 
 </script>
 
 <main>
 	<div
-	bind:this={container}
+		bind:this={container}
 		id="messages-view"
 		class="container flex-col justify-end overflow-auto h-[50vh] bg-black rounded-xl"
 	>
-		{#if data.prev_messages}
-			{#each data.prev_messages as message}
+		{#if all_messages}
+			{#each all_messages as message}
 				{#if data.session}
 					<Message curr_user_id={data.session.user.id} {message} />
 				{/if}
@@ -84,4 +95,3 @@ function scrollToBottom() {
 		</form>
 	</div>
 </main>
-
