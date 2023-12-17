@@ -1,4 +1,4 @@
-<script lang="ts">
+	<script lang="ts">
 	import type { Tables } from '../../types/supabase.types';
 
 	export let curr_user_id: string;

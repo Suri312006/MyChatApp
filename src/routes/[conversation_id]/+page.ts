@@ -22,7 +22,7 @@ export const load = (async ({ params, parent }) => {
 	
 	const { data: prev_messages } = await supabase
 		.from('messages')
-		.select(`*, author(*), conversations(*)`)
+		.select(`*, author(*), conversation_id(*)`)
 		.eq('conversation_id', params.conversation_id);
 
 	// should load messages related to the conversation
