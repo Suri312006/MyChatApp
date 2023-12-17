@@ -20,7 +20,7 @@
 	 The setTimeout with a delay of 0 milliseconds essentially schedules 
 	 the callback to be executed in the next available event loop cycle, 
 	 ensuring it's executed after the current execution context.*/
-	 
+
   }, 0);
  		};
 
@@ -58,9 +58,9 @@
 			console.log(status);
 		});
 
-	// onDestroy(() => {
-	// 	data.supabase.removeChannel(new_messages);
-	// });
+	onDestroy(() => {
+		data.supabase.removeChannel(new_messages_channel);
+	});
 
 	let new_message_text: string;
 	export const send_message = async () => {
