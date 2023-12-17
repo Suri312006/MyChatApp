@@ -7,25 +7,18 @@ export const load = async ({ parent }) => {
   if (!session) {
     throw redirect(303, '/welcome')
   }
-  const { data: tableData } = await supabase.from('countries').select('*')
 
   const {data: otherUsers} = await supabase.from('users').select().neq('id', session.user.id)
+  const { data: conversations } = await supabase
+  .from('conversations')
+  .select(`*, user1(*), user2(*)`)
+  .or(`user1.eq.${session?.user.id}, user2.eq.${session?.user.id}`);
 
-  const {data: userData} = await supabase.from('users').select().eq('id', session.user.id)
+console.log('conversatiosn', conversations);
 
-  console.log("others", otherUsers)
+return {
 
-  // console.log("join table testing", await supabase
-	// 			.from('messages')
-	// 			.select(`*, author(*), conversations(*)`)
-	// 			.eq('conversation_id', 'fd171c51-c397-45b5-bce7-7bd0456ec3ae'))
-
-
-  return {
-    user: session.user,
-    tableData,
-    otherUsers,
-    userData,
-  }
+  conversations
+};
 }
 

@@ -1,7 +1,19 @@
 <script lang="ts">
 	import type { Tables } from '../../types/supabase.types';
-	export let user: Tables<'users'>;
+	export let conversation;
+	export let curr_user_id;
 	//maybe some sort of message id
+
+
+	let user:any ;
+
+	if(conversation.user1.id == curr_user_id){
+		user = conversation.user2
+	} else {
+		user = conversation.user1
+	}
+
+
 </script>
 
 <main id="message">
