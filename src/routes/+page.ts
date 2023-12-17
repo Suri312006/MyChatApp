@@ -9,6 +9,8 @@ export const load = async ({ parent }) => {
   }
 
   const {data: otherUsers} = await supabase.from('users').select().neq('id', session.user.id)
+
+
   const { data: conversations } = await supabase
   .from('conversations')
   .select(`*, user1(*), user2(*)`)
@@ -19,6 +21,8 @@ console.log('conversatiosn', conversations);
 return {
 
   conversations
+,
+otherUsers
 };
 }
 

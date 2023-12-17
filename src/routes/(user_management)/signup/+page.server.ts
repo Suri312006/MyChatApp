@@ -49,9 +49,6 @@ export const actions = {
 					message: "Something went wrong.",
 				})
 			}
-
-            console.log(data.url)
-
 			throw redirect(303, data.url)
 		}
 
