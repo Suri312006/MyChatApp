@@ -16,5 +16,7 @@ export const load = async ({ fetch, data, depends }) => {
     data: { session },
   } = await supabase.auth.getSession()
 
-  return { supabase, session }
+  let logged_in_user = await supabase.from('users').select().eq("id", session!.user.id)
+
+  return { supabase, session, logged_in_user: logged_in_user.data![0] }
 }
