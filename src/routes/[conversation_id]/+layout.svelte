@@ -12,7 +12,7 @@
                 {#each data.conversations as conversation}
                     <li>
                         
-                     <a href="/{conversation.id}">
+                     <a rel="external" href="/{conversation.id}">
                             <Conversation curr_user_id={data.session?.user.id} conversation={conversation} />
                         </a>
                     </li>

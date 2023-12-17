@@ -15,6 +15,8 @@ function scrollToBottom() {
 		scrollToBottom()
 	})
 
+	console.log('being run')
+	console.log(data.conversation_id)
 	//* ENABLED REALTIME FILTER HOLY MOLY ITS SO FINEEEEE
 	let new_messages_channel = data.supabase
 		.channel('messages_channel')
