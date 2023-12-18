@@ -89,8 +89,12 @@
 
 			{#if data.otherUsers}
 				{#each data.otherUsers as user}
-					<User user={user} />
-					<h1>add as a friend</h1>
+					<User {user} />
+					<button type="button" on:click|preventDefault={async() =>{
+						send_friend_request(user.id)
+					}} class="btn variant-filled-success"> 
+						send friend request?
+					</button>
 				{/each}
 			{/if}
 		</div>
