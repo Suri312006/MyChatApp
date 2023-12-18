@@ -13,7 +13,7 @@ export const load = async ({ parent }) => {
 		.or(`user1.eq.${session?.user.id}, user2.eq.${session?.user.id}`);
 
 	const { data: friend_requests } = await supabase
-		.from('friend_requets')
+		.from('friend_requests')
 		.select(`*, to(*), from(*)`)
 		.or(`to.eq.${session.user.id}, from.eq.${session.user.id}`);
 
@@ -21,22 +21,21 @@ export const load = async ({ parent }) => {
 
 	//todo need to create outgoing friend requests
 
+	const incoming_frs = friend_requests?.filter(
+		//@ts-ignore
+		(input) => input.to.id == session.user.id && !input.accepted
+	);
 
-  //@ts-ignore
-	const incoming_frs = friend_requests?.filter((input)=> input.to.id == session.user.id && !input.accepted)
-  //@ts-ignore
-  const outgoing_frs = friend_requests?.filter((input)=> input.from.id == session.user.id && !input.accepted)
-
-  
-
-
+	const outgoing_frs = friend_requests?.filter(
+		//@ts-ignore
+		(input) => input.from.id == session.user.id && !input.accepted
+	);
 
 	//todo need to create incoming friend requests
 	return {
 		conversations,
 		otherUsers,
-    incoming_frs, 
-    outgoing_frs
-
+		incoming_frs,
+		outgoing_frs
 	};
 };
