@@ -2,6 +2,9 @@
 	export let data;
 	// export let form: ActionData;
 	console.log(data.session);
+	//lets see if this works
+	//lets see now pookie!!!
+
 </script>
 
 <main class="flex justify-center h-screen items-center">
@@ -22,3 +25,4 @@
 		</form>
 	</div>
 </main>
+
