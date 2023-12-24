@@ -2,6 +2,9 @@
 import { redirect } from '@sveltejs/kit';
 import type { Tables } from '../../types/supabase.types.js';
 export const load = async ({ parent }) => {
+	//* parent in this case just means its loading form the +layout.server.ts file
+	//* https://kit.svelte.dev/docs/load#using-parent-data
+	//* this data is coming from /src/routes/+layout.ts
 	const { supabase, session } = await parent();
 	if (!session) {
 		throw redirect(303, '/welcome');
