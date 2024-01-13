@@ -2,6 +2,7 @@
 import { PUBLIC_SUPABASE_API_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public'
 import { createSupabaseLoadClient } from '@supabase/auth-helpers-sveltekit'
 import type { Database } from '../../types/supabase.types.js'
+//@ts-expect-error depends has any time, we dont care abt it though 
 export const load = async ({ fetch, data, depends }) => {
   depends('supabase:auth')
 
@@ -16,9 +17,9 @@ export const load = async ({ fetch, data, depends }) => {
     data: { session },
   } = await supabase.auth.getSession()
 
-  
 
-  
+
+
 
   return { supabase, session, }
 }

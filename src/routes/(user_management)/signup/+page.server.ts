@@ -5,7 +5,7 @@ import type { Actions } from "./$types"
 
 const OAUTH_PROVIDERS = ["google"]
 
-export const actions = {
+export const actions:Actions = {
     signup: async(event) => {
 
         let formdata = await event.request.formData()
@@ -18,9 +18,6 @@ export const actions = {
             password: password!.toString()
           })
         
-        //todo need some sort of error handling
-          console.log(data)
-
         //best way to handle this??
         if (data.user?.aud == 'authenticated'){
             return {user: data.user} 

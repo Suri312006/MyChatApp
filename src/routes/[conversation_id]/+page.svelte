@@ -2,7 +2,7 @@
 	import type { PageData } from './$types';
 	import Message from '$lib/message.svelte';
 	import { onDestroy, onMount } from 'svelte';
-	import { invalidate, invalidateAll } from '$app/navigation';
+//	import { invalidate, invalidateAll } from '$app/navigation';
 	export let data: PageData;
 
 		let container: HTMLDivElement;
