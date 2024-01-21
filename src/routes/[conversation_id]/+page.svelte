@@ -28,7 +28,8 @@
 		scrollToBottom();
 	});
 
-	let all_messages = Array.from(data.prev_messages!);
+	let all_messages = data.prev_messages;
+	console.log('all_messages', all_messages)
 	//* ENABLED REALTIME FILTER HOLY MOLY ITS SO FINEEEEE
 
 	let new_messages_channel = data.supabase
